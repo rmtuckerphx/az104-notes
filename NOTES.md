@@ -60,13 +60,19 @@ Types of commands include:
 
 
 `$PSVersionTable`
+
 `$PSVersionTable.PSVersion`
+
 
 `Get-Help`
 
+
 `Get-Command`
+
 `Get-Command -Noun file*`
+
 `Get-Command -Verb get -Noun file*`
+
 
 ## Azure Resource Manager (ARM) templates
 
