@@ -180,3 +180,30 @@ OR
 az deployment group create --resource-group MyRG --template-file .\storage.bicep --parameters skuName=Standard_LRS storageAccountName=mtuckeraz104
 ```
 
+## Microsoft Entra ID
+
+Entra ID:
+* manages identities
+* enforces access policies
+* secures applications and data
+* works in cloud and on-premises
+
+Active Directory (AD DS) is a directory service that runs on Windows Server. Entra ID is a PaaS offering that is a managed directory service in the cloud.
+
+Unique features of Entra ID:
+* multi-factor authentication
+* identity protection
+* self-service password reset
+
+Every Azure Subscription gets a default Entra ID named "Default Directory"
+
+Tiers:
+* Free
+* Basic
+* Premium
+
+A Microsoft Entra tenant serves as the security boundry and a container for objects such as users, groups and applications. A single tenant can support multiple Azure subscriptions.
+
+
+
+Continue at: https://learn.microsoft.com/en-us/training/modules/create-configure-manage-identities/
