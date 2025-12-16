@@ -76,3 +76,107 @@ Types of commands include:
 
 ## Azure Resource Manager (ARM) templates
 
+Declarative way to deploy Infrastructure As Code (IaC) using JSON. Bicep is recommended over ARM for those new to IaC.
+
+Advantages to IaC:
+* Consistent configurations
+* Improved scalability
+* Faster deployments
+* Better traceability
+
+**ARM Template**
+
+```
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "mystorageacct",
+      "metadata": {
+        "description": "Name of the Storage Account"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for the Storage Account"
+      }
+    },
+    "skuName": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS"
+      ],
+      "metadata": {
+        "description": "Storage Account SKU"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2023-01-01",
+      "name": "[parameters('storageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('skuName')]"
+      },
+      "kind": "StorageV2",
+      "properties": {}
+    }
+   ]
+```
+
+Deploy
+```
+New-AzResourceGroupDeployment -ResourceGroupName MyRG -TemplateFile .\storage.json -skuName Standard_LRS -storageAccountName mtuckeraz104
+
+OR
+
+az deployment group create --resource-group MyRG --template-file .\storage.json --parameters skuName=Standard_LRS storageAccountName=mtuckeraz104
+```
+
+
+**Bicep file**
+
+```
+@description('Name of the Storage Account')
+param storageAccountName string = 'mystorageacct'
+
+@description('Location for the Storage Account')
+param location string = resourceGroup().location
+
+@allowed([
+  'Standard_LRS'
+  'Standard_GRS'
+  'Standard_ZRS'
+])
+@description('Storage Account SKU')
+param skuName string = 'Standard_LRS'
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  name: storageAccountName
+  location: location
+  sku: {
+       name: skuName
+  }
+  kind: 'StorageV2'
+  properties: {}
+
+```
+
+Deploy
+```
+New-AzResourceGroupDeployment -ResourceGroupName MyRG -TemplateFile .\storage.bicep -skuName Standard_LRS -storageAccountName mtuckeraz104
+
+OR
+
+az deployment group create --resource-group MyRG --template-file .\storage.bicep --parameters skuName=Standard_LRS storageAccountName=mtuckeraz104
+```
+
